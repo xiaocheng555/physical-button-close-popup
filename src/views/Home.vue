@@ -11,7 +11,7 @@
           price="12.80"
           desc="Q版鸡你太美钥匙扣挂件姬霓太美基尼太美钥匙扣ikun"
           title="精美挂件"
-          thumb="/1.jpg"
+          :thumb="img1"
         />
       </router-link>
     </div>
@@ -19,6 +19,7 @@
 </template>
 
 <script setup lang="ts">
+import img1 from '@/assets/imgs/1.jpg'
 
 </script>
 

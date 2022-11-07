@@ -1,7 +1,7 @@
 <template>
   <div class="detail-page">
     <van-nav-bar title="精美挂件" left-arrow @click-left="back" />
-    <img class="banner" src="/1.jpg" alt="">
+    <img class="banner" :src="img1" alt="">
     <h2 class="title">精美挂件</h2>
     <p class="desc">Q版鸡你太美钥匙扣挂件姬霓太美基尼太美钥匙扣ikun</p>
     <van-action-bar>
@@ -12,7 +12,7 @@
     </van-action-bar>
     <HistoryPopup queryKey="popup" v-model.show="visible" position="bottom">
       <div class="popup-content">
-        <img class="popup-img" src="/1.jpg" @click="previw = true">
+        <img class="popup-img" :src="img1" @click="previw = true">
         <span class="popup-price">¥14.80</span>
         <van-cell title="选择地址" is-link :value="addressId ? list[0].address : ''" @click="addressVisible = true" />
         <p>服务保障：7天无理由</p>
@@ -24,7 +24,7 @@
     </HistoryPopup>
     <HistoryPopup queryKey="preview" v-model.show="previw">
       <div class="preview">
-        <img class="preview-img" src="/1.jpg">
+        <img class="preview-img" :src="img1">
         <router-link class="preview-link" to="/about">服务说明</router-link>
       </div>
     </HistoryPopup>
@@ -41,9 +41,12 @@
 
 <script setup lang="ts">
 import HistoryPopup from '@/components/HistoryPopup.vue'
+import img1 from '@/assets/imgs/1.jpg'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { Toast } from 'vant'
+
+console.log(img1, 'img1')
 
 const router = useRouter()
 const visible = ref(false)
