@@ -1,4 +1,4 @@
-import{d as F,r as A,o as B,c as C,a,b as e,j as D}from"./index.0949727b.js";const o=e("pre",{style:{padding:"20px"}},`\u53EA\u56E0\u4F60\u592A\u7F8E baby
+import{d as F,c as A,a as B,b as C,o as a,j as e,r as D}from"./index.1d295e0d.js";const o=C("pre",{style:{padding:"20px"}},`\u53EA\u56E0\u4F60\u592A\u7F8E baby
 
 \u53EA\u56E0\u4F60\u592A\u7F8E baby
 
@@ -143,4 +143,4 @@ Oh eh oh
 \u4F60\u5230\u5E95\u5C5E\u4E8E\u8C01
 
 \u5C31\u662F\u73B0\u5728\u544A\u8BC9\u6211
-    `,-1),y=F({__name:"About",setup(b){const u=D();function n(){u.back()}return(h,t)=>{const E=A("van-nav-bar");return B(),C("div",null,[a(E,{title:"\u670D\u52A1\u8BF4\u660E","left-arrow":"",onClickLeft:n}),o])}}});export{y as default};
+    `,-1),y=F({__name:"About",setup(b){const u=e();function n(){u.back()}return(h,t)=>{const E=D("van-nav-bar");return a(),A("div",null,[B(E,{title:"\u670D\u52A1\u8BF4\u660E","left-arrow":"",onClickLeft:n}),o])}}});export{y as default};
