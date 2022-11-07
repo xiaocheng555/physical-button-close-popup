@@ -1,0 +1,28 @@
+{
+  "name": "physical-button-close-popup",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "deploy": "gh-pages -d dist",
+    "publish": "npm run build && npm run deploy"
+  },
+  "dependencies": {
+    "resize-observer-polyfill": "^1.5.1",
+    "vant": "^3.6.4",
+    "vue": "^3.2.37",
+    "vue-router": "^4.1.6"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^3.0.3",
+    "@vitejs/plugin-vue-jsx": "^2.0.0",
+    "gh-pages": "^4.0.0",
+    "less": "^4.1.3",
+    "typescript": "^4.6.4",
+    "vite": "^3.0.7",
+    "vue-tsc": "^0.39.5"
+  }
+}
