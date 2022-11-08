@@ -75,8 +75,8 @@ function hasBackRecord () {
 // 添加query参数
 function addQuery () {
   if (!existQueryKey()) {
-    const newQuery: any = { ... route.query }
-    if (props.queryKey) newQuery[props.queryKey] = props.queryValue
+    const newQuery = { ... route.query }
+    if (props.queryKey) newQuery[props.queryKey] = props.queryValue?.toString?.()
     router.push({
       query: newQuery
     })
@@ -86,7 +86,7 @@ function addQuery () {
 // 移除query参数
 function removeQuery () {
   if (props.queryKey && existQueryKey()) {
-    const newQuery: any = { ... route.query }
+    const newQuery = { ... route.query }
     delete newQuery[props.queryKey]
     router.replace({
       query: newQuery
