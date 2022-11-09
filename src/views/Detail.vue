@@ -29,7 +29,7 @@
       </div>
     </HistoryPopup>
     <HistoryPopup style="top: 0;" queryKey="address" v-model.show="addressVisible" position="bottom">
-      <van-nav-bar title="选择收货地址" left-arrow @click-left="back" />
+      <van-nav-bar title="选择收货地址" left-arrow @click-left="closeAddress" />
       <van-address-list
         v-model="addressId"
         :list="list"
@@ -70,6 +70,14 @@ function back () {
 function addToCart () {
   visible.value = false 
   Toast('添加成功')
+}
+
+function closeAddress () {
+  if (!window.history.state?.back) {
+    addressVisible.value = false
+  } else {
+    router.back()
+  }
 }
 </script>
 
