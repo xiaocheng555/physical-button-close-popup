@@ -7,8 +7,9 @@
     "dev": "vite --host",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
-    "deploy": "gh-pages -d dist",
-    "publish": "npm run build && npm run deploy"
+    "build-all": "npm run build && cd vue2 && npm run build",
+    "deploy": "node script/deploy",
+    "publish": "npm run build-all && node script/deploy"
   },
   "dependencies": {
     "resize-observer-polyfill": "^1.5.1",
