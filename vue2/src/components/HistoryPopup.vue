@@ -1,5 +1,5 @@
 <template>
-  <van-popup v-model="dialogVisible" v-bind="$attrs" :lock-scroll="false">
+  <van-popup v-model="dialogVisible" v-bind="$attrs">
     <slot></slot>
   </van-popup>
 </template>

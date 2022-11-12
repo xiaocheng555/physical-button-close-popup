@@ -10,7 +10,7 @@
       <van-action-bar-icon icon="star-o" text="收藏" />
       <van-action-bar-button type="danger" text="加入购物车" @click="visible = !visible" />
     </van-action-bar>
-    <HistoryPopup queryKey="popup" v-model.show="visible" position="bottom">
+    <HistoryPopup queryKey="popup" v-model="visible" position="bottom">
       <div class="popup-content">
         <img class="popup-img" :src="img1" @click="previw = true">
         <span class="popup-price">¥14.80</span>
@@ -22,13 +22,13 @@
         <van-button class="popup-btn" color="linear-gradient(to right, #ff6034, #ee0a24)" block round @click="addToCart">确定</van-button>
       </div>
     </HistoryPopup>
-    <HistoryPopup queryKey="preview" v-model.show="previw">
+    <HistoryPopup queryKey="preview" v-model="previw">
       <div class="preview">
         <img class="preview-img" :src="img1">
         <router-link class="preview-link" to="/about">服务说明</router-link>
       </div>
     </HistoryPopup>
-    <HistoryPopup style="top: 0;" queryKey="address" v-model.show="addressVisible" position="bottom">
+    <HistoryPopup style="top: 0;" queryKey="address" v-model="addressVisible" position="bottom">
       <van-nav-bar title="选择收货地址" left-arrow @click-left="closeAddress" />
       <van-address-list
         v-model="addressId"

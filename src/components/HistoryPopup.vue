@@ -1,4 +1,5 @@
 <template>
+  <!-- van-popup 如果不设置 :lock-scroll="false"，自动打开弹窗会出现页面锁住不能滚动（vue2版本不会） -->
   <van-popup v-model:show="dialogVisible" v-bind="$attrs" :lock-scroll="false">
     <slot></slot>
   </van-popup>
