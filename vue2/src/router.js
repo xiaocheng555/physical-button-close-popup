@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import { extendHistoryState } from './router-extend'
 
 const routes = [
   {
@@ -26,6 +25,5 @@ const router = new Router({
   // mode: 'history',
   routes
 })
-extendHistoryState(router)
 
 export default router
