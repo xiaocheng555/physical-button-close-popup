@@ -31,7 +31,7 @@
         <van-button class="popup-btn" color="linear-gradient(to right, #ff6034, #ee0a24)" block round @click="addToCart">确定</van-button>
       </div>
     </HistoryPopup>
-    <HistoryPopup queryKey="preview" v-model="previw">
+    <HistoryPopup :query-extends="{test: true}" queryKey="preview" v-model="previw">
       <div class="preview">
         <img class="preview-img" :src="img1">
         <router-link class="preview-link" to="/about">服务说明</router-link>

@@ -5,6 +5,13 @@
 </template>
 
 <script>
+function setHistoryState (state) {
+  history.replaceState({
+    ...history.state,
+    ...state
+  }, '')
+}
+
 export default {
   name: 'HistoryPopup',
   props: {
@@ -18,6 +25,10 @@ export default {
     queryValue: {
       type: [Number, String, Boolean],
       default: true
+    },
+    // 扩展query参数
+    queryExtends: {
+      type: Object
     }
   },
   model: {
@@ -51,30 +62,19 @@ export default {
 
     // 判断弹窗是否有返回记录
     hasBackRecord () {
-      const state = window.history?.state
-      if (state && this.queryKey) {
-        if (!state.back) return false
-        
-        const backRoute = this.$router.resolve(state.back || '') // 解析出返回路由
-        if (backRoute.path === this.$routepath) {
-          
-          const backQuery = backRoute.query || {} // 上一页的query参数
-          const curQuery = this.$route.query || {} // 当前页query参数
-          return (this.queryKey in curQuery) && !(this.queryKey in backQuery)
-        }
-        return false
-      } else {
-        return false
-      }
+        return window.history.state?.popupKey === this.queryKey
     },
 
     // 添加query参数
-    addQuery () {
+    async addQuery () {
       if (!this.existQueryKey()) {
-        const newQuery = { ... this.$route.query }
+        const newQuery = { ... this.$route.query, ...this.queryExtends }
         if (this.queryKey) newQuery[this.queryKey] = this.queryValue?.toString?.()
-        this.$router.push({
+        await this.$router.push({
           query: newQuery
+        })
+        setHistoryState({
+          popupKey: this.queryKey
         })
       }
     },
@@ -84,6 +84,9 @@ export default {
       if (this.queryKey && this.existQueryKey()) {
         const newQuery = { ... this.$route.query }
         delete newQuery[this.queryKey]
+        for (let key in this.queryExtends) {
+          delete newQuery[key]
+        }
         this.$router.replace({
           query: newQuery
         })

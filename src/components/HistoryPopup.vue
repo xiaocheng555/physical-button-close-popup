@@ -10,6 +10,13 @@ import { Popup as VanPopup } from 'vant'
 import { computed, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 
+function setHistoryState (state: any) {
+  history.replaceState({
+    ...history.state,
+    ...state
+  }, '')
+}
+
 const props = defineProps({
   modelValue: {
     type: Boolean,
@@ -21,6 +28,10 @@ const props = defineProps({
   queryValue: {
     type: [Number, String, Boolean],
     default: true
+  },
+  // 扩展query参数
+  queryExtends: {
+    type: Object
   }
 })
 const emit = defineEmits([
@@ -56,30 +67,19 @@ function onClose () {
 
 // 判断弹窗是否有返回记录
 function hasBackRecord () {
-  const state = window.history?.state
-  if (state && props.queryKey) {
-    if (!state.back) return false
-    
-    const backRoute = router.resolve(state.back || '') // 解析出返回路由
-    if (backRoute.path === route.path) {
-      
-      const backQuery = backRoute.query // 上一页的query参数
-      const curQuery = route.query // 当前页query参数
-      return (props.queryKey in curQuery) && !(props.queryKey in backQuery)
-    }
-    return false
-  } else {
-    return false
-  }
+  return window.history.state?.popupKey === props.queryKey
 }
 
 // 添加query参数
-function addQuery () {
+async function addQuery () {
   if (!existQueryKey()) {
-    const newQuery = { ... route.query }
+    const newQuery = { ... route.query, ...props.queryExtends }
     if (props.queryKey) newQuery[props.queryKey] = props.queryValue?.toString?.()
-    router.push({
+    await router.push({
       query: newQuery
+    })
+    setHistoryState({
+      popupKey: props.queryKey
     })
   }
 }
@@ -89,6 +89,9 @@ function removeQuery () {
   if (props.queryKey && existQueryKey()) {
     const newQuery = { ... route.query }
     delete newQuery[props.queryKey]
+    for (let key in props.queryExtends) {
+      delete newQuery[key]
+    }
     router.replace({
       query: newQuery
     })
