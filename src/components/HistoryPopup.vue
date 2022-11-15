@@ -9,6 +9,14 @@
 import { Popup as VanPopup } from 'vant'
 import { computed, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import useHistoryPopup from './useHistoryPopup'
+
+function setHistoryState (state: any) {
+  history.replaceState({
+    ...history.state,
+    ...state
+  }, '')
+}
 
 const props = defineProps({
   modelValue: {
@@ -21,6 +29,10 @@ const props = defineProps({
   queryValue: {
     type: [Number, String, Boolean],
     default: true
+  },
+  // 扩展query参数
+  queryExtends: {
+    type: Object
   }
 })
 const emit = defineEmits([
@@ -29,6 +41,8 @@ const emit = defineEmits([
 
 const router = useRouter()
 const route = useRoute()
+const { popupKeyPrev } = useHistoryPopup()
+
 
 // 控制弹窗显示
 const dialogVisible = computed({
@@ -38,6 +52,10 @@ const dialogVisible = computed({
   set (val) {
     emit('update:modelValue', val)
   }
+})
+
+const fullQueryKey = computed(() => {
+  return props.queryKey && popupKeyPrev + props.queryKey 
 })
 
 // 弹窗打开事件
@@ -56,39 +74,32 @@ function onClose () {
 
 // 判断弹窗是否有返回记录
 function hasBackRecord () {
-  const state = window.history?.state
-  if (state && props.queryKey) {
-    if (!state.back) return false
-    
-    const backRoute = router.resolve(state.back || '') // 解析出返回路由
-    if (backRoute.path === route.path) {
-      
-      const backQuery = backRoute.query // 上一页的query参数
-      const curQuery = route.query // 当前页query参数
-      return (props.queryKey in curQuery) && !(props.queryKey in backQuery)
-    }
-    return false
-  } else {
-    return false
-  }
+  return window.history.state?.popupKey === fullQueryKey.value
 }
 
 // 添加query参数
-function addQuery () {
+async function addQuery () {
   if (!existQueryKey()) {
-    const newQuery = { ... route.query }
-    if (props.queryKey) newQuery[props.queryKey] = props.queryValue?.toString?.()
-    router.push({
+    const newQuery = { ... route.query, ...props.queryExtends }
+    if (fullQueryKey.value) newQuery[fullQueryKey.value] = props.queryValue?.toString?.()
+    await router.push({
       query: newQuery
+    })
+    setHistoryState({
+      popupKey: fullQueryKey.value
     })
   }
 }
 
 // 移除query参数
 function removeQuery () {
-  if (props.queryKey && existQueryKey()) {
+  if (fullQueryKey.value && existQueryKey()) {
     const newQuery = { ... route.query }
-    delete newQuery[props.queryKey]
+    delete newQuery[fullQueryKey.value]
+    for (let key in props.queryExtends) {
+      delete newQuery[key]
+    }
+    
     router.replace({
       query: newQuery
     })
@@ -98,28 +109,40 @@ function removeQuery () {
 // url上是否存在queryKey
 function existQueryKey () {
   const { query } = route 
-  return props.queryKey && props.queryKey in query
+  return fullQueryKey.value && fullQueryKey.value in query
+}
+
+// 根据query参数变化，主动打开或关闭弹窗
+function syncPopupState () {
+  if (!fullQueryKey.value) return
+  
+  const exist = existQueryKey()
+  // 主动关闭弹窗
+  if (!exist && dialogVisible.value) {
+    dialogVisible.value = false
+  }
+  // 主动打开弹窗
+  if (exist && !dialogVisible.value) {
+    dialogVisible.value = true
+  }
 }
 
 watch(dialogVisible, (val) => {
   val ? onOpen() : onClose()
 })
 
-watch(() => route.query, () => {
-  if (!props.queryKey) return
-  
-  const exist = existQueryKey()
-  // 自动关闭弹窗
-  if (!exist && dialogVisible.value) {
-    dialogVisible.value = false
-  }
-  // 自动打开弹窗
-  if (exist && !dialogVisible.value) {
-    dialogVisible.value = true
-  }
-}, {
+watch(() => fullQueryKey.value, () => {
+  console.warn(`[HistoryPopup] 传入属性值 queryKey: ${fullQueryKey.value} 不建议修改`)
+})
+
+watch(() => route.query, syncPopupState, {
   immediate: true
 })
+// setTimeout(() => {
+//   watch(() => route.query, syncPopupState, {
+//     immediate: true
+//   })
+// })
 </script>
 
 <style lang='less' scoped>
