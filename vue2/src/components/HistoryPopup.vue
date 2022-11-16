@@ -62,7 +62,7 @@ export default {
 
     // 判断弹窗是否有返回记录
     hasBackRecord () {
-        return window.history.state?.popupKey === this.queryKey
+      return window.history.state?.popupKey === this.queryKey
     },
 
     // 添加query参数
