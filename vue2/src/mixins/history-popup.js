@@ -5,15 +5,20 @@ function setHistoryState (state) {
   }, '')
 }
 
+let mounted = false
+
 export default {
   props: {
+    // v-model 控制弹窗显示和隐藏
     modelValue: {
       type: Boolean,
       default: false
     },
+    // query的key值（url的 ?querykey=queryValue）
     queryKey: {
       type: String
     },
+    // query的value值（url的 ?querykey=queryValue）
     queryValue: {
       type: [Number, String, Boolean],
       default: true
@@ -21,6 +26,16 @@ export default {
     // 扩展query参数
     queryExtends: {
       type: Object
+    },
+    // 没有返回页时，不默认打开弹窗（场景：弹窗打开时的链接在新窗口打开，新页面不需要弹窗打开，则弹窗保持关闭并将链接上的queryKey给去除）
+    defaultCloseOnNoBack: {
+      type: Boolean,
+      default: false
+    },
+    // 初次挂载时，不默认打开弹窗（场景：弹窗打开时刷新页面，不需要立即打开弹窗，可能需要先获取数据，等获取完数据后，用户再手动去打开弹窗）
+    defaultCloseOnMount: {
+      type: Boolean,
+      default: false
     }
   },
   model: {
@@ -102,9 +117,24 @@ export default {
         }
         // 自动打开弹窗
         if (exist && !this.dialogVisible) {
+          // 没有返回页时，不默认打开弹窗
+          if (this.defaultCloseOnNoBack && !window.history.state?.popupKey) {
+            this.removeQuery()
+            return
+          }
+          // 初次挂载时，不默认打开弹窗
+          if (this.defaultCloseOnMount && !mounted) {
+            return
+          }
           this.dialogVisible = true
         }
       }
     }
+  },
+  created () {
+    this.dialogVisible && this.onOpen()
+  },
+  mounted () {
+    mounted = true
   }
 }

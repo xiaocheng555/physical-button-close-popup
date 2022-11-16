@@ -45,13 +45,8 @@ import img1 from '@/assets/imgs/1.jpg'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { Toast } from 'vant'
-import useHistoryPopup from '@/components/useHistoryPopup'
-
-const { closeHistoryPopups } = useHistoryPopup()
-closeHistoryPopups()
 
 const router = useRouter()
-
 const visible = ref(false)
 const previw = ref(false)
 const addressId = ref('')
