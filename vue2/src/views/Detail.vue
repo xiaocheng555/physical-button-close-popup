@@ -4,15 +4,6 @@
     <img class="banner" :src="img1" alt="">
     <h2 class="title">精美挂件</h2>
     <p class="desc">Q版鸡你太美钥匙扣挂件姬霓太美基尼太美钥匙扣ikun</p>
-    <!-- <van-goods-action>
-  <van-goods-action-icon icon="chat-o" text="客服" />
-  <van-goods-action-icon icon="cart-o" text="购物车" />
-  <van-goods-action-icon icon="shop-o" text="店铺" />
-  <van-goods-action-button
-    type="danger"
-    text="立即购买"
-  />
-</van-goods-action> -->
     <van-goods-action>
       <van-goods-action-icon icon="shop-o" text="店铺" />
       <van-goods-action-icon icon="chat-o" text="客服" />

@@ -10,7 +10,7 @@
       <van-action-bar-icon icon="star-o" text="收藏" />
       <van-action-bar-button type="danger" text="加入购物车" @click="visible = !visible" />
     </van-action-bar>
-    <HistoryPopup queryKey="popup" v-model="visible" position="bottom">
+    <HistoryPopup queryKey="popup" :queryValue="String(new Date().getTime())" v-model="visible" position="bottom">
       <div class="popup-content">
         <img class="popup-img" :src="img1" @click="previw = true">
         <span class="popup-price">¥14.80</span>
@@ -46,8 +46,6 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { Toast } from 'vant'
 
-console.log(img1, 'img1')
-
 const router = useRouter()
 const visible = ref(false)
 const previw = ref(false)
@@ -73,11 +71,7 @@ function addToCart () {
 }
 
 function closeAddress () {
-  if (!window.history.state?.back) {
-    addressVisible.value = false
-  } else {
-    router.back()
-  }
+  addressVisible.value = false
 }
 </script>
 
